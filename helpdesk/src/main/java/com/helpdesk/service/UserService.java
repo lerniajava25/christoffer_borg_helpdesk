@@ -1,5 +1,6 @@
 package com.helpdesk.service;
 
+import com.helpdesk.model.User;
 import com.helpdesk.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +11,9 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 }
