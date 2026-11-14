@@ -43,5 +43,15 @@ public class Ticket {
         this.createdBy = createdBy;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
 }
