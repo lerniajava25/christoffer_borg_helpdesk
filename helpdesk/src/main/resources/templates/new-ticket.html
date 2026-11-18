@@ -1,0 +1,11 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<h1>New ticket</h1>
+<form th:action="@{/tickets/new}" method="post">
+    <label>Title</label><br>
+    <input type="text" name="title"><br>
+    <label>Description</label><br>
+    <textarea name="description"></textarea><br>
+    <button>Submit</button>
+</form>
+</body>

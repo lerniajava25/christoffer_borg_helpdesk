@@ -26,4 +26,8 @@ public class TicketService {
     public Optional<Ticket> getTicketById(Long id) {
         return ticketRepository.findById(id);
     }
+
+    public List<Ticket> getTicketsByUserId(Long userId) {
+        return ticketRepository.findByCreatedById(userId);
+    }
 }

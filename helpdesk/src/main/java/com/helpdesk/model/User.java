@@ -13,11 +13,15 @@ public class User {
     private String email;
     private boolean enabled;
 
-    public User(String username, String password, String email, boolean enabled) {
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public User(String username, String password, String email, boolean enabled, Role role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.enabled = enabled;
+        this.role = role;
     }
 
     protected User () {
@@ -43,6 +47,10 @@ public class User {
         return enabled;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -57,5 +65,9 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -54,4 +54,20 @@ public class Ticket {
     public User getCreatedBy() {
         return createdBy;
     }
+
+    public TicketStatus getStatus() {
+        return status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getLastModified() {
+        return lastModified;
+    }
 }

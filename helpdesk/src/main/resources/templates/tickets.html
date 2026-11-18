@@ -1,0 +1,11 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<h1 th:text="${username}"></h1>
+<a th:each="ticket : ${tickets}"
+   th:href="@{/tickets/{id}(id=${ticket.id})}"
+   th:text="${ticket.title}"></a>
+
+<br>
+<br><br>
+
+<a th:href="@{/tickets/new}">New Ticket</a>

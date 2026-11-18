@@ -1,5 +1,6 @@
 package com.helpdesk.repository;
 
+import com.helpdesk.model.Role;
 import com.helpdesk.model.Ticket;
 import com.helpdesk.model.User;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class TicketRepositoryTest {
 
     @Test
     void shouldSaveTicketWithUser() {
-        User user = new User("Christoffer", "secret", "mail@mail.com", true);
+        User user = new User("Christoffer", "secret", "mail@mail.com", true, Role.USER);
         userRepository.save(user);
         Ticket ticket = new Ticket(user, "Fel", "Datorn startar inte");
         ticketRepository.save(ticket);

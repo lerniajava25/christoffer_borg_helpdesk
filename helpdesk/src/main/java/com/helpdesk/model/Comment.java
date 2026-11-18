@@ -24,4 +24,16 @@ public class Comment {
         this.ticket = ticket;
         this.author= author;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
 }

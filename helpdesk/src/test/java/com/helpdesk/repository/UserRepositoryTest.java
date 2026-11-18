@@ -1,5 +1,6 @@
 package com.helpdesk.repository;
 
+import com.helpdesk.model.Role;
 import com.helpdesk.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class UserRepositoryTest {
     UserRepository userRepository;
     @Test
     void shouldSaveAndFindUser(){
-        User user = new User("Christoffer", "secret", "mail@example.com", false);
+        User user = new User("Christoffer", "secret", "mail@example.com", false, Role.USER);
         userRepository.save(user);
         Optional<User> result = userRepository.findById(user.getId());
         User foundUser = result.orElseThrow();
