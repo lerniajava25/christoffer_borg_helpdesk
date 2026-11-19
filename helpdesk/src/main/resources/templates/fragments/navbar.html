@@ -1,0 +1,41 @@
+<nav th:fragment="navbar"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     class="flex items-center justify-between bg-slate-900 text-white px-8 py-4">
+
+    <a th:href="@{/}" class="text-2xl font-bold">
+        Helpdesk
+    </a>
+
+    <div class="flex items-center gap-4">
+
+        <a th:href="@{/tickets}"
+           class="px-4 py-2 rounded-lg text-slate-200 hover:bg-slate-700 hover:text-white transition-colors">
+            My tickets
+        </a>
+
+        <a sec:authorize="hasAnyRole('AGENT', 'ADMIN')"
+           th:href="@{/agent/tickets/assigned}"
+           class="px-4 py-2 rounded-lg text-slate-200 hover:bg-slate-700 hover:text-white transition-colors">
+            Assigned tickets
+        </a>
+
+        <a sec:authorize="hasAnyRole('AGENT', 'ADMIN')"
+           th:href="@{/agent/tickets}"
+           class="px-4 py-2 rounded-lg text-slate-200 hover:bg-slate-700 hover:text-white transition-colors">
+            All tickets
+        </a>
+
+        <a th:href="@{/tickets/new}" class="btn btn-primary">
+            New ticket
+        </a>
+
+        <form th:action="@{/logout}" method="post">
+            <button type="submit"
+                    class="px-4 py-2 rounded-lg border border-slate-500 text-white hover:bg-slate-700 transition-colors cursor-pointer">
+                Log out
+            </button>
+        </form>
+
+    </div>
+</nav>

@@ -21,7 +21,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
         );
 
-        http.formLogin(form -> form.permitAll());
+        http.formLogin(form -> form
+                .loginPage("/login")
+                .permitAll()
+        );
         return http.build();
     }
 }

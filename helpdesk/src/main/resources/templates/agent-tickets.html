@@ -1,7 +1,109 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>All tickets | Helpdesk</title>
 
-<h1>All Tickets</h1>
-<a th:each="ticket : ${tickets}"
-   th:href="@{/agent/tickets/{id}(id=${ticket.id})}"
-   th:text="${ticket.title}"></a>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
 
+<body class="min-h-screen bg-slate-100 text-slate-900">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="max-w-6xl mx-auto px-8 py-10">
+
+    <h1 class="text-3xl font-bold mb-2">Assigned tickets</h1>
+
+    <p class="text-slate-500 mb-8">
+        View, assign and manage support requests.
+    </p>
+
+    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+        <h2 class="text-xl font-semibold mb-6">
+            Support requests
+        </h2>
+
+        <div class="overflow-x-auto">
+
+            <table class="table text-slate-900">
+
+                <thead class="bg-slate-100 text-slate-600">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Created by</th>
+                    <th>Assigned agent</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="ticket : ${tickets}"
+                    class="hover:bg-slate-50">
+
+                    <td th:text="${ticket.id}"></td>
+
+                    <td th:text="${ticket.title}"
+                        class="font-medium"></td>
+
+                    <td th:text="${ticket.createdBy.username}"></td>
+
+                    <td>
+                        <span th:if="${ticket.assignedAgent == null}"
+                              class="text-slate-400 italic">
+                            Unassigned
+                        </span>
+
+                        <span th:if="${ticket.assignedAgent != null}"
+                              th:text="${ticket.assignedAgent.username}">
+                        </span>
+                    </td>
+
+                    <td>
+                        <span th:if="${ticket.status.name() == 'NEW'}"
+                              class="rounded-full bg-blue-100 text-blue-800 px-3 py-1 text-xs font-semibold">
+                            New
+                        </span>
+
+                        <span th:if="${ticket.status.name() == 'IN_PROGRESS'}"
+                              class="rounded-full bg-amber-100 text-amber-800 px-3 py-1 text-xs font-semibold">
+                            In progress
+                        </span>
+
+                        <span th:if="${ticket.status.name() == 'CLOSED'}"
+                              class="rounded-full bg-green-100 text-green-800 px-3 py-1 text-xs font-semibold">
+                            Closed
+                        </span>
+                    </td>
+
+                    <td>
+                        <a th:href="@{/agent/tickets/{id}(id=${ticket.id})}"
+                           class="text-indigo-600 font-medium hover:underline">
+                            View details
+                        </a>
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p th:if="${tickets.isEmpty()}"
+           class="text-center text-slate-500 py-10">
+            There are no support requests yet.
+        </p>
+
+    </section>
+
+</main>
+
+</body>
+</html>

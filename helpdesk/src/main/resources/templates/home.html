@@ -1,23 +1,61 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      data-theme="light">
 <head>
     <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body>
-<h1>Helpdesk</h1>
-<p>Welcome to Helpdesk</p>
-<nav>
-    <a th:href="@{/tickets}">My tickets</a>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<main class="max-w-6xl mx-auto px-8 py-10">
 
-    <a th:href="@{/tickets/new}">New ticket</a>
+    <h1 class="text-3xl font-bold mb-2">
+        Welcome to Helpdesk
+    </h1>
 
-    <a sec:authorize="hasAnyRole('AGENT', 'ADMIN')"
-       th:href="@{/agent/tickets}">All tickets</a>
-</nav>
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Log out</button>
-</form>
+    <p class="text-slate-500 mb-8">
+        Create and manage your support requests.
+    </p>
+
+    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+        <h2 class="text-xl font-semibold mb-3">
+            Your workspace
+        </h2>
+
+        <p class="text-slate-500 mb-6">
+            View your existing tickets or create a new support request.
+        </p>
+
+        <div class="flex flex-wrap gap-3">
+
+            <a th:href="@{/tickets}" class="btn btn-primary">
+                My tickets
+            </a>
+
+            <a sec:authorize="hasAnyRole('AGENT', 'ADMIN')"
+               th:href="@{/agent/tickets/assigned}"
+               class="btn btn-primary">
+                Assigned tickets
+            </a>
+
+            <a sec:authorize="hasAnyRole('AGENT', 'ADMIN')"
+               th:href="@{/agent/tickets}"
+               class="btn btn-outline">
+                All tickets
+            </a>
+
+            <a th:href="@{/tickets/new}" class="btn btn-outline">
+                New ticket
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
 </body>
 </html>

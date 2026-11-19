@@ -1,11 +1,93 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My tickets | Helpdesk</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
 
-<h1 th:text="${username}"></h1>
-<a th:each="ticket : ${tickets}"
-   th:href="@{/tickets/{id}(id=${ticket.id})}"
-   th:text="${ticket.title}"></a>
+<body class="min-h-screen bg-slate-100 text-slate-900">
 
-<br>
-<br><br>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<a th:href="@{/tickets/new}">New Ticket</a>
+<main class="max-w-6xl mx-auto px-8 py-10">
+
+    <h1 class="text-3xl font-bold mb-2">My tickets</h1>
+
+    <p class="text-slate-500 mb-8">
+        Welcome, <span th:text="${username}"></span>.
+        View and manage your support requests.
+    </p>
+
+    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-semibold">Your tickets</h2>
+
+            <a th:href="@{/tickets/new}" class="btn btn-primary">
+                + New ticket
+            </a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="table text-slate-900">
+
+                <thead class="bg-slate-100 text-slate-600">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="ticket : ${tickets}"
+                    class="hover:bg-slate-50">
+
+                    <td th:text="${ticket.id}"></td>
+
+                    <td class="font-medium"
+                        th:text="${ticket.title}"></td>
+
+                    <td>
+                        <span th:if="${ticket.status.name() == 'NEW'}"
+                              class="rounded-full bg-blue-100 text-blue-800 px-3 py-1 text-xs font-semibold">
+                            New
+                        </span>
+
+                        <span th:if="${ticket.status.name() == 'IN_PROGRESS'}"
+                              class="rounded-full bg-amber-100 text-amber-800 px-3 py-1 text-xs font-semibold">
+                            In progress
+                        </span>
+
+                        <span th:if="${ticket.status.name() == 'CLOSED'}"
+                              class="rounded-full bg-green-100 text-green-800 px-3 py-1 text-xs font-semibold">
+                            Closed
+                        </span>
+                    </td>
+
+                    <td>
+                        <a th:href="@{/tickets/{id}(id=${ticket.id})}"
+                           class="text-indigo-600 font-medium hover:underline">
+                            View details
+                        </a>
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <p th:if="${tickets.isEmpty()}"
+           class="text-center text-slate-500 py-10">
+            You have not created any tickets yet.
+        </p>
+
+    </section>
+
+</main>
+</body>
+</html>

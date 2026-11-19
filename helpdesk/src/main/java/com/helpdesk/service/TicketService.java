@@ -33,6 +33,10 @@ public class TicketService {
         return ticketRepository.findByCreatedById(userId);
     }
 
+    public List<Ticket> getTicketsByAgentId(Long agentId) {
+        return ticketRepository.findByAssignedAgentId(agentId);
+    }
+
     public Ticket assignTicket(Ticket ticket, User agent) {
         ticket.setAssignedAgent(agent);
         return ticketRepository.save(ticket);
@@ -42,4 +46,5 @@ public class TicketService {
         ticket.setStatus(status);
     return ticketRepository.save(ticket);
     }
+
 }

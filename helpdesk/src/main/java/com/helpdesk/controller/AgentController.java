@@ -41,6 +41,17 @@ public class AgentController {
         return "agent-tickets";
     }
 
+    @GetMapping("/agent/tickets/assigned")
+    public String assignedTickets(Model model, Principal principal) {
+        String agentName = principal.getName();
+        Optional<User> result = userService.getUserByUsername(agentName);
+        User userAgent = result.orElseThrow();
+        List<Ticket> tickets = ticketService.getTicketsByAgentId(userAgent.getId());
+        model.addAttribute("tickets", tickets);
+        model.addAttribute("pageTitle", "Assigned tickets");
+        return "agent-tickets";
+    }
+
     @GetMapping("/agent/tickets/{id}")
     public String ticketDetails(@PathVariable("id") Long id, Model model) {
 

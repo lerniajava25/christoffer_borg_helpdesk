@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Helpdesk</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen bg-slate-100 text-slate-900 flex items-center justify-center px-6">
+
+<main class="w-full max-w-md">
+
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-slate-900">
+            Helpdesk
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+            Sign in to your workspace
+        </p>
+    </div>
+
+    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+
+        <h2 class="text-2xl font-semibold mb-6">
+            Welcome back
+        </h2>
+
+        <div th:if="${param.error}"
+             class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 mb-6 text-sm">
+            Invalid username or password.
+        </div>
+
+        <div th:if="${param.logout}"
+             class="bg-green-50 border border-green-200 text-green-700 rounded-lg p-3 mb-6 text-sm">
+            You have been successfully logged out.
+        </div>
+
+        <form th:action="@{/login}" method="post" class="space-y-5">
+
+            <div>
+                <label for="username" class="block font-medium mb-2">
+                    Username
+                </label>
+
+                <input id="username"
+                       type="text"
+                       name="username"
+                       placeholder="Enter your username"
+                       autocomplete="username"
+                       required
+                       class="input input-bordered w-full bg-white">
+            </div>
+
+            <div>
+                <label for="password" class="block font-medium mb-2">
+                    Password
+                </label>
+
+                <input id="password"
+                       type="password"
+                       name="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password"
+                       required
+                       class="input input-bordered w-full bg-white">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full mt-2">
+                Sign in
+            </button>
+
+        </form>
+
+    </section>
+
+    <p class="text-center text-sm text-slate-400 mt-8">
+        Helpdesk &middot; Support management system
+    </p>
+
+</main>
+
+</body>
+</html>

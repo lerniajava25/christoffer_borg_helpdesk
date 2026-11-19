@@ -1,71 +1,241 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <title>Ticket details</title>
+    <title>Ticket details | Helpdesk</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
 
-<h1 th:text="${ticket.title}"></h1>
+<body class="min-h-screen bg-slate-100 text-slate-900">
 
-<h2>Description</h2>
-<p th:text="${ticket.description}"></p>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h2>Status</h2>
-<p th:text="${ticket.status}"></p>
+<main class="max-w-6xl mx-auto px-8 py-10">
 
-<h2>Created at</h2>
-<p th:text="${ticket.createdAt}"></p>
+    <a th:href="@{/agent/tickets}"
+       class="text-indigo-600 font-medium hover:underline">
+        &larr; Back to all tickets
+    </a>
 
-<h2>Last modified</h2>
-<p th:text="${ticket.lastModified}"></p>
+    <h1 th:text="${ticket.title}"
+        class="text-3xl font-bold mt-6 mb-2"></h1>
 
-<h2>Assigned agent</h2>
+    <p class="text-slate-500 mb-8">
+        Ticket #<span th:text="${ticket.id}"></span>
+    </p>
 
-<p th:if="${ticket.assignedAgent == null}">
-    Unassigned
-</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-<h2>Status</h2>
-<p th:text="${ticket.status}"></p>
+        <!-- Main content -->
+        <div class="lg:col-span-2 space-y-6">
 
-<p th:if="${ticket.assignedAgent != null}"
-   th:text="${ticket.assignedAgent.username}">
-</p>
+            <!-- Description -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
 
-<form th:action="@{/agent/tickets/{id}/status(id=${ticket.id})}" method="post">
+                <h2 class="text-xl font-semibold mb-4">
+                    Description
+                </h2>
 
-    <select name="status">
-        <option value="NEW">New</option>
-        <option value="IN_PROGRESS">In progress</option>
-        <option value="WAITING_FOR_USER">Waiting for user</option>
-        <option value="RESOLVED">Resolved</option>
-        <option value="CLOSED">Closed</option>
-    </select>
+                <p th:text="${ticket.description}"
+                   class="text-slate-700 whitespace-pre-wrap break-words"></p>
 
-    <button type="submit">Update status</button>
+            </section>
 
-</form>
+            <!-- Comments -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
 
-<form th:action="@{/agent/tickets/{id}/assign(id=${ticket.id})}" method="post">
-    <button type="submit">Assign to me</button>
-</form>
+                <h2 class="text-xl font-semibold mb-6">
+                    Comments
+                </h2>
 
-<h2>Comments</h2>
+                <p th:if="${comments.isEmpty()}"
+                   class="text-slate-500 mb-6">
+                    No comments yet.
+                </p>
 
-<div th:each="comment : ${comments}">
-    <p th:text="${comment.author.username}"></p>
-    <p th:text="${comment.content}"></p>
-</div>
+                <div class="space-y-4">
 
-<h2>Add comment</h2>
+                    <div th:each="comment : ${comments}"
+                         class="bg-slate-50 rounded-lg border border-slate-200 p-4">
 
-<form th:action="@{/agent/tickets/{id}/comments(id=${ticket.id})}" method="post">
-    <textarea name="content"></textarea>
-    <button type="submit">Post comment</button>
-</form>
+                        <p th:text="${comment.author.username}"
+                           class="font-semibold mb-2"></p>
 
-<a href="/agent/tickets">Back to all tickets</a>
+                        <p th:text="${comment.content}"
+                           class="text-slate-700 whitespace-pre-wrap break-words"></p>
+
+                    </div>
+
+                </div>
+
+                <!-- Comment form -->
+                <form th:action="@{/agent/tickets/{id}/comments(id=${ticket.id})}"
+                      method="post"
+                      class="mt-8 border-t border-slate-200 pt-6">
+
+                    <h3 class="text-lg font-semibold mb-4">
+                        Add comment
+                    </h3>
+
+                    <textarea name="content"
+                              required
+                              rows="4"
+                              placeholder="Write your comment..."
+                              class="textarea textarea-bordered w-full bg-white"></textarea>
+
+                    <div class="flex justify-end mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            Post comment
+                        </button>
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-6">
+
+            <!-- Ticket information -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+                <h2 class="text-xl font-semibold mb-6">
+                    Ticket information
+                </h2>
+
+                <div class="space-y-6">
+
+                    <div>
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">
+                            Status
+                        </h3>
+
+                        <span th:if="${ticket.status.name() == 'NEW'}"
+                              class="rounded-full bg-blue-100 text-blue-800 px-3 py-1 text-xs font-semibold">
+                            New
+                        </span>
+
+                        <span th:if="${ticket.status.name() == 'IN_PROGRESS'}"
+                              class="rounded-full bg-amber-100 text-amber-800 px-3 py-1 text-xs font-semibold">
+                            In progress
+                        </span>
+
+                        <span th:if="${ticket.status.name() == 'CLOSED'}"
+                              class="rounded-full bg-green-100 text-green-800 px-3 py-1 text-xs font-semibold">
+                            Closed
+                        </span>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-4">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">
+                            Created by
+                        </h3>
+
+                        <p th:text="${ticket.createdBy.username}"
+                           class="font-medium"></p>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-4">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">
+                            Assigned agent
+                        </h3>
+
+                        <p th:if="${ticket.assignedAgent == null}"
+                           class="text-slate-400 italic">
+                            Unassigned
+                        </p>
+
+                        <p th:if="${ticket.assignedAgent != null}"
+                           th:text="${ticket.assignedAgent.username}"
+                           class="font-medium"></p>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-4">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">
+                            Created at
+                        </h3>
+
+                        <p th:text="${ticket.createdAt}"
+                           class="text-sm break-words"></p>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-4">
+                        <h3 class="text-sm font-medium text-slate-500 mb-2">
+                            Last modified
+                        </h3>
+
+                        <p th:text="${ticket.lastModified}"
+                           class="text-sm break-words"></p>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Agent actions -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+
+                <h2 class="text-xl font-semibold mb-6">
+                    Manage ticket
+                </h2>
+
+                <form th:action="@{/agent/tickets/{id}/status(id=${ticket.id})}"
+                      method="post"
+                      class="space-y-3">
+
+                    <label for="status" class="block text-sm font-medium">
+                        Change status
+                    </label>
+
+                    <select id="status"
+                            name="status"
+                            class="select select-bordered w-full">
+
+                        <option value="NEW"
+                                th:selected="${ticket.status.name() == 'NEW'}">
+                            New
+                        </option>
+
+                        <option value="IN_PROGRESS"
+                                th:selected="${ticket.status.name() == 'IN_PROGRESS'}">
+                            In progress
+                        </option>
+
+                        <option value="CLOSED"
+                                th:selected="${ticket.status.name() == 'CLOSED'}">
+                            Closed
+                        </option>
+
+                    </select>
+
+                    <button type="submit" class="btn btn-primary w-full">
+                        Update status
+                    </button>
+
+                </form>
+
+                <form th:if="${ticket.assignedAgent == null}"
+                      th:action="@{/agent/tickets/{id}/assign(id=${ticket.id})}"
+                      method="post"
+                      class="mt-6 border-t border-slate-200 pt-6">
+
+                    <button type="submit" class="btn btn-outline w-full">
+                        Assign to me
+                    </button>
+
+                </form>
+
+            </section>
+
+        </aside>
+
+    </div>
+
+</main>
 
 </body>
 </html>

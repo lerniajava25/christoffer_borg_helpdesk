@@ -8,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Component
@@ -30,6 +29,11 @@ public class DevDataInitializer implements CommandLineRunner {
         if (result.isEmpty()) {
             User user = new User("devuser", "secret", "devuser@example.com", true, Role.USER);
             userService.createUser(user);
+        }
+        Optional<User> result2 = userRepository.findByUsername("devuser2");
+        if (result2.isEmpty()) {
+            User user2 = new User("devuser2", "secret", "devuser2@example.com", true, Role.USER);
+            userService.createUser(user2);
         }
         Optional<User> agentResult = userRepository.findByUsername("devagent");
         if (agentResult.isEmpty()) {
