@@ -1,6 +1,8 @@
 package com.helpdesk.service;
 
 import com.helpdesk.model.Ticket;
+import com.helpdesk.model.TicketStatus;
+import com.helpdesk.model.User;
 import com.helpdesk.repository.TicketRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,15 @@ public class TicketService {
 
     public List<Ticket> getTicketsByUserId(Long userId) {
         return ticketRepository.findByCreatedById(userId);
+    }
+
+    public Ticket assignTicket(Ticket ticket, User agent) {
+        ticket.setAssignedAgent(agent);
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket updateStatus(Ticket ticket, TicketStatus status) {
+        ticket.setStatus(status);
+    return ticketRepository.save(ticket);
     }
 }

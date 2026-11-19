@@ -20,6 +20,9 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "created_by_id")
     private User createdBy;
+    @ManyToOne
+    @JoinColumn(name = "assigned_agent_id")
+    private User assignedAgent;
 
     @PrePersist
     public void onCreate() {
@@ -69,5 +72,17 @@ public class Ticket {
 
     public LocalDateTime getLastModified() {
         return lastModified;
+    }
+
+    public User getAssignedAgent() {
+        return assignedAgent;
+    }
+
+    public void setAssignedAgent(User assignedAgent) {
+        this.assignedAgent = assignedAgent;
+    }
+
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 }

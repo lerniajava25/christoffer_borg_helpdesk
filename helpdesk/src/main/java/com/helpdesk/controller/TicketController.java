@@ -52,6 +52,9 @@ public class TicketController {
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             Principal principal) {
+        if (title.isBlank() || description.isBlank() || title.length() > 255) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         String username = principal.getName();
         Optional<User> result = userService.getUserByUsername(username);
         User user = result.orElseThrow();
@@ -66,7 +69,9 @@ public class TicketController {
         Optional<User> result = userService.getUserByUsername(username);
         User user = result.orElseThrow();
         Optional<Ticket> ticketResult = ticketService.getTicketById(id);
-        Ticket ticket = ticketResult.orElseThrow();
+        Ticket ticket = ticketResult.orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
         if (!user.getId().equals(ticket.getCreatedBy().getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
@@ -81,11 +86,16 @@ public class TicketController {
                 @PathVariable("id") Long id,
                 @RequestParam("content") String content,
                 Principal principal) {
+        if(content.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         String username = principal.getName();
         Optional<User> result = userService.getUserByUsername(username);
         User user = result.orElseThrow();
         Optional<Ticket> ticketResult = ticketService.getTicketById(id);
-        Ticket ticket = ticketResult.orElseThrow();
+        Ticket ticket = ticketResult.orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
         if (!user.getId().equals(ticket.getCreatedBy().getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }

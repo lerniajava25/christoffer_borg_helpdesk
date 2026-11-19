@@ -1,0 +1,7 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<h1>All Tickets</h1>
+<a th:each="ticket : ${tickets}"
+   th:href="@{/agent/tickets/{id}(id=${ticket.id})}"
+   th:text="${ticket.title}"></a>
+

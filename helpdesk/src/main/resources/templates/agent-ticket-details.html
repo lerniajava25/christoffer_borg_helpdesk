@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket details</title>
+</head>
+<body>
+
+<h1 th:text="${ticket.title}"></h1>
+
+<h2>Description</h2>
+<p th:text="${ticket.description}"></p>
+
+<h2>Status</h2>
+<p th:text="${ticket.status}"></p>
+
+<h2>Created at</h2>
+<p th:text="${ticket.createdAt}"></p>
+
+<h2>Last modified</h2>
+<p th:text="${ticket.lastModified}"></p>
+
+<h2>Assigned agent</h2>
+
+<p th:if="${ticket.assignedAgent == null}">
+    Unassigned
+</p>
+
+<h2>Status</h2>
+<p th:text="${ticket.status}"></p>
+
+<p th:if="${ticket.assignedAgent != null}"
+   th:text="${ticket.assignedAgent.username}">
+</p>
+
+<form th:action="@{/agent/tickets/{id}/status(id=${ticket.id})}" method="post">
+
+    <select name="status">
+        <option value="NEW">New</option>
+        <option value="IN_PROGRESS">In progress</option>
+        <option value="WAITING_FOR_USER">Waiting for user</option>
+        <option value="RESOLVED">Resolved</option>
+        <option value="CLOSED">Closed</option>
+    </select>
+
+    <button type="submit">Update status</button>
+
+</form>
+
+<form th:action="@{/agent/tickets/{id}/assign(id=${ticket.id})}" method="post">
+    <button type="submit">Assign to me</button>
+</form>
+
+<h2>Comments</h2>
+
+<div th:each="comment : ${comments}">
+    <p th:text="${comment.author.username}"></p>
+    <p th:text="${comment.content}"></p>
+</div>
+
+<h2>Add comment</h2>
+
+<form th:action="@{/agent/tickets/{id}/comments(id=${ticket.id})}" method="post">
+    <textarea name="content"></textarea>
+    <button type="submit">Post comment</button>
+</form>
+
+<a href="/agent/tickets">Back to all tickets</a>
+
+</body>
+</html>

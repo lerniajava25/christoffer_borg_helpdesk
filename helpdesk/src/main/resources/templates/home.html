@@ -1,8 +1,23 @@
 <!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Home</title>
 </head>
 <body>
 <h1>Helpdesk</h1>
 <p>Welcome to Helpdesk</p>
+<nav>
+    <a th:href="@{/tickets}">My tickets</a>
+
+    <a th:href="@{/tickets/new}">New ticket</a>
+
+    <a sec:authorize="hasAnyRole('AGENT', 'ADMIN')"
+       th:href="@{/agent/tickets}">All tickets</a>
+</nav>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Log out</button>
+</form>
 </body>
+</html>
