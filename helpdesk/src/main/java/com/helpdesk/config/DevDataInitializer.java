@@ -36,9 +36,13 @@ public class DevDataInitializer implements CommandLineRunner {
             userService.createUser(user2);
         }
         Optional<User> agentResult = userRepository.findByUsername("devagent");
+
         if (agentResult.isEmpty()) {
             User devagent = new User("devagent", "secret", "devagent@example.com", true, Role.USER);
-            userService.createUser(devagent);
+
+            User savedAgent = userService.createUser(devagent);
+            savedAgent.setRole(Role.AGENT);
+            userRepository.save(savedAgent);
         }
     }
 }
